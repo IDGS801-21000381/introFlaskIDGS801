@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block container %}
+
+<h1>Hola desde alumnos !!!</h1>
+<h2>escuela :{{titulo}}</h2>
+    {% for no in nombres%}
+            <h3>{{no}}</h3>
+    {%endfor%}
+
+{% endblock %}
