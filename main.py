@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request
-
+import forms
 app=Flask(__name__)
 
 @app.route("/")
@@ -11,6 +11,17 @@ def alumnos():
     titulo="UTL !!!"
     nombres=["mario", "juan", "Angel", "saul"]
     return render_template("alumnos.html",titulo=titulo, nombres=nombres)
+
+#nueva
+@app.route("/alumnos2",methods=["GET", "POST"])
+def alumnos2():
+    alumno_clase =forms.UserForm(request.form)
+    if request.form=='POST':
+        pass 
+    
+    return render_template("alumnos2.html",form=alumno_clase)
+
+
 
 @app.route("/maestros")
 def maestros():
