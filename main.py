@@ -1,4 +1,5 @@
 from flask import Flask,render_template,request
+from wtforms import validators
 import forms
 app=Flask(__name__)
 
@@ -6,7 +7,7 @@ app=Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/alumnos")
+@app.route("/alumnos", methods=['GET', 'POST'])
 def alumnos():
     titulo="UTL !!!"
     nombres=["mario", "juan", "Angel", "saul"]
@@ -19,7 +20,7 @@ def alumnos2():
     apa = ''
     ama = ''
     alumno_clase =forms.UserForm(request.form)
-    if request.method == 'POST':
+    if request.method == 'POST' and alumno_clase.validate():
         nom = alumno_clase.nombre.data
         apa = alumno_clase.apaterno.data
         ama = alumno_clase.amaterno.data
