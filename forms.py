@@ -1,4 +1,8 @@
+from wtforms import Form
+from flask_wtf import FlaskForm
+
 from wtforms import Form, StringField, IntegerField, validators
+
 
 class UserForm(Form):
     nombre = StringField('nombre', [

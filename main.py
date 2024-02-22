@@ -1,21 +1,52 @@
 from flask import Flask,render_template,request
 from wtforms import validators
+from flask import Flask,render_template,request, flash
+from flask_wtf.csrf import CSRFProtect
+from flask import g
 import forms
 app=Flask(__name__)
+app.secret_key="Esta es mi clave secreta "
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+@app.before_request 
+def before_request():
+    g.nombre ="Mario"
+    print("before 1")
+
+@app.after_request
+def after_request(response):
+    print("after 3")
+    return(response)
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/alumnos", methods=['GET', 'POST'])
+@app.route("/alumnos", methods=["GET", "POST"])
 def alumnos():
-    titulo="UTL !!!"
-    nombres=["mario", "juan", "Angel", "saul"]
-    return render_template("alumnos.html",titulo=titulo, nombres=nombres)
-
+    nom = ''
+    apa = ''
+    ama = ''
+    alumno_clase = forms.UserForm(request.form)
+    if request.method == 'POST' and alumno_clase.validate():
+        nom = alumno_clase.nombre.data
+        apa = alumno_clase.aPaterno.data
+        ama = alumno_clase.aMaterno.data
+        edad = alumno_clase.edad.data
+        print('Nombre: {}'.format(nom))
+        print('aPaterno: {}'.format(apa))
+        print('aMaterno: {}'.format(ama))
+    
+        mensaje = 'Bienvenido {}'.format(nom)
+        flash(mensaje)
+    
+    return render_template("alumnos.html", form = alumno_clase, nom = nom, apa = apa, ama = ama)
 
 @app.route("/alumnos2", methods=['GET', 'POST'])
 def alumnos2():
+    print("alumno:{}".format(g.nombre))
     nom = ''
     apa = ''
     ama = ''
@@ -28,6 +59,8 @@ def alumnos2():
         print('Nombre: {}'.format(nom))
         print('Apaterno: {}'.format(apa))
         print('Amaterno: {}'.format(ama))
+        mensaje ='Bienvenido{}'.format(nom)
+        flash(mensaje)
     return render_template("alumnos2.html", form=alumno_clase, nom=nom, apa=apa, ama=ama)
 
 
